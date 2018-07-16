@@ -23,11 +23,12 @@ const SeedPickerItemsList = ({
               item.images.length >= 1 && (
                 <img src={item.images[0].url} alt="" />
               )}
-            {item.type === 'artist'
-              ? item.name
-              : item.artists.map(artist => artist.name).join(', ') +
+            {item.type === 'artist' && item.name}
+            {item.type === 'track' &&
+              item.artists.map(artist => artist.name).join(', ') +
                 ': ' +
                 item.name}
+            {item.type === 'genre' && item.name}
           </Chip>
         ))}
       {!isSelected && hasMore && <Chip onClick={loadMore}>...</Chip>}

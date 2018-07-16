@@ -12,6 +12,7 @@ function appRoutes(app) {
   app.get('/sign-in', signIn);
   app.get('/my-top', myTopTracksAndArtists);
   app.get('/recommendations', getRecommendations);
+  app.get('/recommendations/genres', getGenreSeeds);
 }
 function login(req, res) {
   const url = spotify.createLoginUrl();
@@ -105,14 +106,32 @@ function getRecommendations(req, res) {
     req.query['genres'] && req.query['genres'].length > 0
       ? req.query['genres'].split(',')
       : null;
-  debug(userId, seed_artists, seed_tracks);
+  User.get(userId).then(
+    user => {
+      if (!user) {
+        const err = new Error('User not found');
+        return handleRouteError(res, err);
+      }
+      user
+        .getRecommendations({ seed_artists, seed_tracks, seed_genres })
+        .then(data => {
+          res.send(data);
+        })
+        .catch(err => handleRouteError(res, err));
+    },
+    err => handleRouteError(res, err)
+  );
+}
+
+function getGenreSeeds(req, res) {
+  const userId = req.headers['spotify-user'];
   User.get(userId).then(
     user => {
       if (!user) {
         reject('Fatal error getting top: User not found');
       }
       user
-        .getRecommendations({ seed_artists, seed_tracks, seed_genres })
+        .getGenreSeeds()
         .then(data => {
           res.send(data);
         })

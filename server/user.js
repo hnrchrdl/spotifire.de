@@ -198,5 +198,10 @@ User.prototype.getRecommendations = function(options) {
     return this.getSpotifyConnection().getRecommendations(options);
   });
 };
+User.prototype.getGenreSeeds = function() {
+  return this.authorizeSpotifyConnection().then(() => {
+    return this.getSpotifyConnection().getAvailableGenreSeeds();
+  });
+};
 
 module.exports = User;

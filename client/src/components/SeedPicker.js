@@ -2,7 +2,7 @@ import React from 'react';
 import * as api from '../lib/api';
 import withUserContext from '../hoc/withUserContext';
 import SeedPickerItemsList from './SeedPickerItemsList';
-import { Input } from 'react-materialize';
+import { Input, Button, Icon, Modal } from 'react-materialize';
 import propTypes from 'prop-types';
 
 class SeedPicker extends React.Component {
@@ -98,17 +98,25 @@ class SeedPicker extends React.Component {
     );
     return (
       <React.Fragment>
-        <Input
-          s={6}
-          type="select"
-          label="Time range to base results on"
-          defaultValue={this.state.time_range}
-          onChange={this.handleTimeRangeChanged}
+        <Modal
+          trigger={
+            <Button flat className="right" waves="light" icon="settings" />
+          }
         >
-          <option value="long_term">Long term</option>
-          <option value="medium_term">Medium term</option>
-          <option value="short_term">Short term</option>
-        </Input>
+          <Input
+            s={4}
+            type="select"
+            label="Time range to base results on"
+            defaultValue={this.state.time_range}
+            onChange={this.handleTimeRangeChanged}
+          >
+            <option value="long_term">Long term</option>
+            <option value="medium_term">Medium term</option>
+            <option value="short_term">Short term</option>
+          </Input>
+        </Modal>
+        <Button flat className="right" waves="light" icon="search" />
+        <div className="space-bottom clearfloat" />
         {selected.length > 0 && (
           <SeedPickerItemsList
             items={selected}
@@ -123,6 +131,7 @@ class SeedPicker extends React.Component {
           hasMore={this.state.limit < 50}
           disabled={this.props.disabled}
         />
+        <div className="clearfloat" />
       </React.Fragment>
     );
   }

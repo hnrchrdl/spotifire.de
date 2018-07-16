@@ -11,6 +11,7 @@ import {
   Button
 } from 'react-materialize';
 import SeedPicker from './SeedPicker';
+import GenrePicker from './GenrePicker';
 
 class PlaylistForm extends React.Component {
   static propTypes = {
@@ -86,14 +87,17 @@ class PlaylistForm extends React.Component {
       <React.Fragment>
         <Row>
           <Col s={12}>
-            <div className="right">
-              <Button className="space-right" flat onClick={this.submit}>
-                reset<Icon left>undo</Icon>
-              </Button>
-              <Button waves="teal" onClick={this.submit}>
-                preview<Icon left>visibility</Icon>
-              </Button>
-            </div>
+            <Button
+              flat
+              className="teal white-text right"
+              waves="light"
+              onClick={this.submit}
+            >
+              preview<Icon left>visibility</Icon>
+            </Button>
+            <Button className="space-right right" flat onClick={this.submit}>
+              reset<Icon left>undo</Icon>
+            </Button>
           </Col>
         </Row>
         <Row>
@@ -151,7 +155,11 @@ class PlaylistForm extends React.Component {
                 </CollapsibleItem>
               ))}
               <CollapsibleItem header="Genres">
-                {/* <GenrePicker></GenrePicker> */}
+                <GenrePicker
+                  selected={this.state.genres}
+                  onChange={this.onSeedChange}
+                  disabled={this.isSeedsDisabled()}
+                />
               </CollapsibleItem>
             </Collapsible>
           </Col>

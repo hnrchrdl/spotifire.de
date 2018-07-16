@@ -19,6 +19,9 @@ main {
 .space-right {
   margin-right: 5px;
 }
+.space-bottom {
+  margin-bottom: 5px;
+}
 .left {
   float: left;
 }
@@ -27,4 +30,7 @@ main {
 }
 .logo {
   font-family: 'Londrina Outline';
+}
+.clearfloat {
+  clear: both;
 }

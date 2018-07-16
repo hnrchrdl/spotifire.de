@@ -30,6 +30,13 @@ export function getRecommendations(userId, { artists, tracks, genres }) {
   });
 }
 
+export function getGenreSeeds(userId) {
+  return axios.get(SERVER_URI + '/recommendations/genres', {
+    headers: {
+      'Spotify-User': userId
+    }
+  });
+}
 // export function createPlaylist(userId, options) {
 //   return axios
 //     .post(SERVER_URI + '/create-playlist', { userId, options })
