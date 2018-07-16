@@ -10,13 +10,8 @@ function appRoutes(app) {
   app.get('/login', login);
   app.get('/user', getUserInfo);
   app.get('/sign-in', signIn);
-  // app.post('/create-playlist', createPlaylist);
-  // app.post('/publish-playlist', publishPlaylist);
   app.get('/my-top', myTopTracksAndArtists);
-
-  // Static files to react build.
-  // toDo: Server-side render the app
-  // app.use('/', express.static(BUILD_PATH));
+  app.get('/recommendations', getRecommendations);
 }
 function login(req, res) {
   const url = spotify.createLoginUrl();
@@ -44,45 +39,7 @@ function signIn(req, res) {
     err => handleRouteError(res, err)
   );
 }
-// function createPlaylist(req, res) {
-//   const userId = req.body.userId;
-//   const name = req.body.options.name;
-//   const isPublic = req.body.options.public || false;
 
-//   if (!userId || !name) {
-//     res.statusMessage = 'UserId or Playlist name is missing.';
-//     return res.status(400).end();
-//   }
-//   const user = Pool.getUser(userId);
-//   if (!user) {
-//     res.statusMessage = 'Could not get user ' + userId + '.';
-//     return res.status(500).end();
-//   }
-//   user
-//     .createPlaylist(name, { public: isPublic })
-//     .then(function(data) {
-//       res.send(200, data);
-//     })
-//     .catch(function(err) {
-//       res.statusMessage = err.name + ': ' + err.message;
-//       return res.status(err.statusCode).end();
-//     });
-// }
-// function publishPlaylist(req, res) {
-//   const userId = req.body.userId;
-//   const playlistId = req.body.playlistId;
-//   debug(req.body);
-//   if (!userId || !playlistId) {
-//     res.statusMessage = 'UserId or Playlist id is missing.';
-//     return res.status(400).end();
-//   }
-//   const user = Pool.getUser(userId);
-//   if (!user) {
-//     res.statusMessage = 'Could not get user ' + userId + '.';
-//     return res.status(500).end();
-//   }
-//   user.publishPlaylist(playlistId);
-// }
 function getUserInfo(req, res) {
   const userId = req.query.userId;
   const user = User.get(userId).then(
@@ -94,7 +51,7 @@ function getUserInfo(req, res) {
       }
     },
     err => {
-      debug(err);
+      debug('Get User Info error:', err);
       res.status(500).send(err);
     }
   );
@@ -124,20 +81,49 @@ function myTopTracksAndArtists(req, res) {
             fetcher = () => user.getTopGenres(limit, offset, time_range);
             break;
         }
-        fetcher()
-          .then(data => {
-            res.send(data);
-          })
-          .catch(err => handleRouteError(res, err));
+        fetcher().then(data => {
+          res.send(data);
+        });
+        // .catch(err => handleRouteError(res, err));
       },
       err => handleRouteError(res, err)
     );
   });
 }
 
+function getRecommendations(req, res) {
+  const userId = req.headers['spotify-user'];
+  const seed_artists =
+    req.query['artists'] && req.query['artists'].length > 0
+      ? req.query['artists'].split(',')
+      : null;
+  const seed_tracks =
+    req.query['tracks'] && req.query['tracks'].length > 0
+      ? req.query['tracks'].split(',')
+      : null;
+  const seed_genres =
+    req.query['genres'] && req.query['genres'].length > 0
+      ? req.query['genres'].split(',')
+      : null;
+  debug(userId, seed_artists, seed_tracks);
+  User.get(userId).then(
+    user => {
+      if (!user) {
+        reject('Fatal error getting top: User not found');
+      }
+      user
+        .getRecommendations({ seed_artists, seed_tracks, seed_genres })
+        .then(data => {
+          res.send(data);
+        })
+        .catch(err => handleRouteError(res, err));
+    },
+    err => handleRouteError(res, err)
+  );
+}
+
 function handleRouteError(res, err) {
-  debug(err);
-  res.status(500).send(err.message);
+  res.status(err.statusCode || 500).send(err.name + ' * ' + err.message);
 }
 
 module.exports = appRoutes;

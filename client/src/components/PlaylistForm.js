@@ -1,15 +1,21 @@
 import React from 'react';
+import propTypes from 'prop-types';
 import {
   Row,
   Col,
   Input,
+  Icon,
   Badge,
   Collapsible,
-  CollapsibleItem
+  CollapsibleItem,
+  Button
 } from 'react-materialize';
 import SeedPicker from './SeedPicker';
 
 class PlaylistForm extends React.Component {
+  static propTypes = {
+    handleSubmit: propTypes.func
+  };
   constructor() {
     super();
     this.state = {
@@ -56,6 +62,17 @@ class PlaylistForm extends React.Component {
     this.setState({ numberOfTracks });
   };
 
+  submit = () => {
+    if (this.numSeedsSelected() === 0) {
+      window.Materialize.toast(
+        'Cannot generate playlist: no seeds supplied.',
+        2500
+      );
+      return;
+    }
+    this.props.handleSubmit(this.state);
+  };
+
   isSeedsDisabled = () => this.numSeedsSelected() >= 5;
 
   numSeedsSelected = () =>
@@ -67,6 +84,18 @@ class PlaylistForm extends React.Component {
     const { name, isPublic, numberOfTracks } = this.state;
     return (
       <React.Fragment>
+        <Row>
+          <Col s={12}>
+            <div className="right">
+              <Button className="space-right" flat onClick={this.submit}>
+                reset<Icon left>undo</Icon>
+              </Button>
+              <Button waves="teal" onClick={this.submit}>
+                preview<Icon left>visibility</Icon>
+              </Button>
+            </div>
+          </Col>
+        </Row>
         <Row>
           <Col s={12}>
             <Input

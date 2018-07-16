@@ -17,6 +17,19 @@ export function getTop(userId, type, limit, offset, time_range) {
   });
 }
 
+export function getRecommendations(userId, { artists, tracks, genres }) {
+  return axios.get(SERVER_URI + '/recommendations', {
+    headers: {
+      'Spotify-User': userId
+    },
+    params: {
+      artists: artists.join(','),
+      tracks: tracks.join(','),
+      genres: genres.join(',')
+    }
+  });
+}
+
 // export function createPlaylist(userId, options) {
 //   return axios
 //     .post(SERVER_URI + '/create-playlist', { userId, options })

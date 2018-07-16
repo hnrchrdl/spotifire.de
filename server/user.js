@@ -115,19 +115,18 @@ User.prototype.authorizeSpotifyConnection = function(code = null) {
     if (accessToken && isExpired) {
       // Refresh token!
       connection.setAccessToken(accessToken);
-      debug(connection);
-      return connection
-        .refreshAccessToken()
-        .then(({ body }) => {
+      return connection.refreshAccessToken().then(
+        ({ body }) => {
           const refreshedAccessToken = body['access_token'];
           // set token and refresh token
           debug('Refreshed access token. ');
           this.useSpotifyAccessToken(refreshedAccessToken).persist();
           return resolve(this);
-        })
-        .catch(err => {
+        },
+        err => {
           reject(err);
-        });
+        }
+      );
     }
     if (code) {
       // Authorize from code
@@ -185,29 +184,6 @@ User.prototype.getSpotifyProfile = function() {
       debug(err);
     });
 };
-
-// User.prototype.createPlaylist = function(name, options) {
-//   const playlist = { name, options };
-//   const doc = Object.assign({}, playlist, { userId: this.getId() });
-//   debug(doc);
-//   return db.savePlaylist(doc).then(playlists => {
-//     this._playlists = this._playlists.concat(playlists);
-//     this.save();
-//     return playlists;
-//   });
-// };
-
-// User.prototype.publishPlaylist = function(playlistId) {
-//   return db.getPlaylist(playlistId).then(playlist => {
-//     debug(playlist);
-//     return this._connection
-//       .createPlaylist(this._id, playlist.name, { public: playlist.public })
-//       .then(playlist => {
-//         return playlist;
-//       });
-//   });
-// };
-
 User.prototype.getTopArtists = function(limit, offset, time_range) {
   return this._spotifyConnection.getMyTopArtists({ limit, offset, time_range });
 };
@@ -216,6 +192,11 @@ User.prototype.getTopTracks = function(limit, offset, time_range) {
 };
 User.prototype.getTopGenres = function(limit, offset, time_range) {
   return this._spotifyConnection.getMyTopTracks({ limit, offset, time_range });
+};
+User.prototype.getRecommendations = function(options) {
+  return this.authorizeSpotifyConnection().then(() => {
+    return this.getSpotifyConnection().getRecommendations(options);
+  });
 };
 
 module.exports = User;

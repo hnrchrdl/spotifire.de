@@ -1,0 +1,21 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: #fff;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  opacity: 0.92;
+  z-index: 1000;
+  box-shadow: 0 8px 6px -6px #ddd;
+  /* border-bottom: 1px solid #eee; */
+}
+.navbar > .logo {
+  font-size: 3em;
+}
+.navbar > .logo > a {
+  color: #333;
+}
