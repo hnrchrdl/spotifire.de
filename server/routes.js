@@ -31,7 +31,6 @@ function signIn(req, res) {
             .setDisplayName(body.display_name)
             .persist();
           const url = `${process.env.CLIENT_URI}/${user.getId()}`;
-          debug(url);
           res.redirect(url);
         },
         err => handleRouteError(res, err)
@@ -106,6 +105,8 @@ function getRecommendations(req, res) {
     req.query['genres'] && req.query['genres'].length > 0
       ? req.query['genres'].split(',')
       : null;
+  const settings = JSON.parse(req.query['settings'] || {});
+  debug(settings);
   User.get(userId).then(
     user => {
       if (!user) {
@@ -113,7 +114,12 @@ function getRecommendations(req, res) {
         return handleRouteError(res, err);
       }
       user
-        .getRecommendations({ seed_artists, seed_tracks, seed_genres })
+        .getRecommendations({
+          seed_artists,
+          seed_tracks,
+          seed_genres,
+          ...settings
+        })
         .then(data => {
           res.send(data);
         })

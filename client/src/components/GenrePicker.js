@@ -59,7 +59,7 @@ class GenrePicker extends React.Component {
     );
     return (
       <React.Fragment>
-        <Button flat className="right" waves="light" icon="search" />
+        {/* <Button flat className="right" waves="light" icon="search" /> */}
         <div className="space-bottom clearfloat" />
         {selected.length > 0 && (
           <SeedPickerItemsList

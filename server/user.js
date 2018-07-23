@@ -120,7 +120,7 @@ User.prototype.authorizeSpotifyConnection = function(code = null) {
           const refreshedAccessToken = body['access_token'];
           // set token and refresh token
           debug('Refreshed access token. ');
-          this.useSpotifyAccessToken(refreshedAccessToken).persist();
+          this.useSpotifyAccessToken(refreshedAccessToken);
           return resolve(this);
         },
         err => {
@@ -143,7 +143,6 @@ User.prototype.authorizeSpotifyConnection = function(code = null) {
             refreshToken
           );
           this.setSpotifyAccessTokenExpireDateTime(expireDateTime);
-          this.persist();
           return resolve(this);
         })
         .catch(err => {
@@ -194,6 +193,7 @@ User.prototype.getTopGenres = function(limit, offset, time_range) {
   return this._spotifyConnection.getMyTopTracks({ limit, offset, time_range });
 };
 User.prototype.getRecommendations = function(options) {
+  console.log(options);
   return this.authorizeSpotifyConnection().then(() => {
     return this.getSpotifyConnection().getRecommendations(options);
   });

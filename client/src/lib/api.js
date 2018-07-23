@@ -17,7 +17,10 @@ export function getTop(userId, type, limit, offset, time_range) {
   });
 }
 
-export function getRecommendations(userId, { artists, tracks, genres }) {
+export function getRecommendations(
+  userId,
+  { artists, tracks, genres, settings }
+) {
   return axios.get(SERVER_URI + '/recommendations', {
     headers: {
       'Spotify-User': userId
@@ -25,7 +28,8 @@ export function getRecommendations(userId, { artists, tracks, genres }) {
     params: {
       artists: artists.join(','),
       tracks: tracks.join(','),
-      genres: genres.join(',')
+      genres: genres.join(','),
+      settings
     }
   });
 }

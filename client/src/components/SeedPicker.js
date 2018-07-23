@@ -115,7 +115,7 @@ class SeedPicker extends React.Component {
             <option value="short_term">Short term</option>
           </Input>
         </Modal>
-        <Button flat className="right" waves="light" icon="search" />
+        {/* <Button flat className="right" waves="light" icon="search" /> */}
         <div className="space-bottom clearfloat" />
         {selected.length > 0 && (
           <SeedPickerItemsList
