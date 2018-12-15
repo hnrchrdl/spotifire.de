@@ -4,7 +4,6 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './Home';
 import Dashboard from './Dashboard';
-import NavBar from './Navbar';
 
 class App extends Component {
   render() {

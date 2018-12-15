@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { Input, Row, Col } from 'react-materialize';
+import { Input, Row } from 'react-materialize';
 
 class Settings extends React.Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class Settings extends React.Component {
   };
 
   render() {
-    const { items, onChange } = this.props;
+    const { items } = this.props;
     return (
       <React.Fragment>
         {items &&

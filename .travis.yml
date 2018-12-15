@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - '8'
+script: echo "npm test temporarily disabled"
+before_install:
+  - cd server
+  - openssl aes-256-cbc -K $encrypted_2c6b4a45bed6_key -iv $encrypted_2c6b4a45bed6_iv -in secrets.tar.enc -out secrets.tar -d
+  - tar xvf secrets.tar
+  - mv .env.prod .env
+install:
+  - cd ../client && yarn && yarn build && cd ../server
+  - mkdir static_react
+  - cp -r ../client/build/* static_react
+deploy:
+  skip_cleanup: true
+  provider: gae
+  project: spotifire
+  default: true
+  on: master

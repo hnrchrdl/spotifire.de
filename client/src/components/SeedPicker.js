@@ -2,7 +2,7 @@ import React from 'react';
 import * as api from '../lib/api';
 import withUserContext from '../hoc/withUserContext';
 import SeedPickerItemsList from './SeedPickerItemsList';
-import { Input, Button, Icon, Modal } from 'react-materialize';
+import { Input, Button, Modal } from 'react-materialize';
 import propTypes from 'prop-types';
 
 class SeedPicker extends React.Component {

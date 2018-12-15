@@ -1,5 +1,6 @@
-import { SERVER_URI } from '../env';
 import axios from 'axios';
+
+const SERVER_URI = process.env.REACT_APP_SERVER_URI;
 
 export function getUserInfo(userId) {
   return axios.get(SERVER_URI + '/user?userId=' + encodeURIComponent(userId));

@@ -1,20 +1,29 @@
 {
-  "name": "node_spotify",
+  "name": "node_spotify-server",
   "version": "1.0.0",
   "description": "",
+  "author": "hnrchrdl",
   "main": "index.js",
+  "engines": {
+    "node": "8"
+  },
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "encrypt:delete": "rm secrets.tar",
+    "encrypt:pack": "tar cvf secrets.tar .env.prod service-account.json",
+    "encrypt:perform": "travis encrypt-file secrets.tar",
+    "encrypt:unpack": "tar xvf secrets.tar"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "create-react-app": "^1.5.2",
+    "debug": "^3.1.0",
     "dotenv": "^6.0.0",
+    "eslint": "^5.10.0",
     "express": "^4.16.3",
     "global": "^4.3.2",
     "mongodb": "^3.1.1",
@@ -23,7 +32,23 @@
     "tingodb": "^0.6.1"
   },
   "devDependencies": {
-    "debug": "^3.1.0",
+    "@google-cloud/nodejs-repo-tools": "^3.0.0",
     "nodemon": "^1.17.5"
+  },
+  "cloud-repo-tools": {
+    "test": {
+      "app": {
+        "msg": "Cloud Repo Tools initialized :)"
+      }
+    },
+    "requiresKeyFile": true,
+    "requiresProjectId": true,
+    "requiredEnvVars": [
+      "SPOTIFY_CLIENT_ID",
+      "SPOTIFY_CLIENT_SECRET",
+      "REDIRECT_URI",
+      "CLIENT_URI",
+      "ENABLE_CORS"
+    ]
   }
 }

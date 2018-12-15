@@ -2,7 +2,6 @@ import React from 'react';
 import * as api from '../lib/api';
 import withUserContext from '../hoc/withUserContext';
 import SeedPickerItemsList from './SeedPickerItemsList';
-import { Button } from 'react-materialize';
 import propTypes from 'prop-types';
 
 class GenrePicker extends React.Component {

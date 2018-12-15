@@ -1,2 +1,6 @@
-.env
 node_modules
+.env
+.env.prod
+service-account.json
+static_react
+secrets.tar

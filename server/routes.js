@@ -1,9 +1,5 @@
-const express = require('express');
-const path = require('path');
 const User = require('./user');
 const spotify = require('./spotify');
-
-const BUILD_PATH = path.join(__dirname + '/../client/build');
 
 function appRoutes(app) {
   // Sign-in callback route.
