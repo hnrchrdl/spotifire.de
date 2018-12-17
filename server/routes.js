@@ -2,7 +2,6 @@ const User = require('./user');
 const spotify = require('./spotify');
 
 function appRoutes(app) {
-  // Sign-in callback route.
   app.get('/login', login);
   app.get('/user', getUserInfo);
   app.get('/sign-in', signIn);
@@ -38,7 +37,7 @@ function signIn(req, res) {
 
 function getUserInfo(req, res) {
   const userId = req.query.userId;
-  const user = User.get(userId).then(
+  User.get(userId).then(
     user => {
       if (user) {
         res.send(user.getInfo());

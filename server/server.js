@@ -13,19 +13,27 @@ if (process.env.ENABLE_CORS === '1') {
   app.use(require('cors')());
 }
 app.use(require('body-parser').json());
-app.use(express.static(process.cwd() + '/public'));
 
-// Register routes.
-// REACT
-const REACT_PUBLIC = 'static_react';
-app.use(express.static(process.cwd() + '/' + REACT_PUBLIC));
-
-const REACT_STATIC = path.join(__dirname, REACT_PUBLIC, 'index.html');
-app.get('/', function(req, res) {
-  res.sendFile(REACT_STATIC);
+app.use(function(req, res, next) {
+  debug(req.url);
+  next();
 });
 
+// Statics
+
+// Register routes.
+app.get('/', function(req, res) {
+  res.sendFile(REACT_STATIC + '/index.html');
+});
 require('./routes')(app);
+
+// REACT
+const REACT_PUBLIC = 'static_react';
+const REACT_STATIC = process.cwd() + '/' + REACT_PUBLIC;
+app.use('/', express.static(REACT_STATIC));
+app.get('*', function(req, res) {
+  res.sendFile(REACT_STATIC + '/index.html');
+});
 
 var DEFAULT_PORT = 5000;
 app.listen(process.env.PORT || DEFAULT_PORT, () => {

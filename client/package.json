@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "REACT_APP_SERVER_URI=http://localhost:5000 react-scripts start",
     "start": "REACT_APP_SERVER_URI=https://spotifire.appspot.com react-scripts start",
-    "build:dev": "REACT_APP_SERVER_URI=http://localhost:5000 react-scripts build",
+    "build:dev": "REACT_APP_SERVER_URI=http://localhost:5000 react-scripts build && rm -r -f ../server/static_react && mkdir ../server/static_react && cp -r build/* ../server/static_react",
     "build": "REACT_APP_SERVER_URI=https://spotifire.appspot.com react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

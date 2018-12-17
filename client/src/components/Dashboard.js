@@ -28,8 +28,9 @@ class Dashboard extends Component {
           this.setState({ user: result.data });
         })
         .catch(err => {
-          const { history } = this.props;
-          history.push('/');
+          // const { history } = this.props;
+          // history.push('/');
+          console.error(err);
         });
     }
   }
